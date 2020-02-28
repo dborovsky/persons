@@ -14,9 +14,12 @@ namespace Persons.Abstractions.Data
         {
             Persons = new List<Person>()
             {
-                new Person() { Id = new Guid("9D2B0228-4D0D-4C23-8B49-01A698857709"), Name = "Васька", Age = 37 },
-                new Person() { Id = new Guid("9D2B0228-4D0D-4C23-8B49-01A698857710"), Name = "Сашка", Age = 28 },
-                new Person() { Id = new Guid("9D2B0228-4D0D-4C23-8B49-01A698857711"), Name = "Петька", Age = 27 }
+                new Person() { Id = new Guid("9D2B0228-4D0D-4C23-8B49-01A698857709"), Name = "Васька", BirthDay = new DateTime(2008, 3, 9, 16, 5, 7, 123)
+        },
+                new Person() { Id = new Guid("9D2B0228-4D0D-4C23-8B49-01A698857710"), Name = "Сашка", BirthDay = new DateTime(2008, 3, 9, 16, 5, 7, 123)
+        },
+                new Person() { Id = new Guid("9D2B0228-4D0D-4C23-8B49-01A698857711"), Name = "Петька", BirthDay = new DateTime(2008, 3, 9, 16, 5, 7, 123)
+        }
             };
         }
     }
@@ -25,29 +28,39 @@ namespace Persons.Abstractions.Data
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public DateTime BirthDay { get; set; }
+        public DateTime _birthDay { get; set; }
+        public DateTime BirthDay
+        {
+            get { return _birthDay; }
+            set
+            {
+                _birthDay = value;
+                Age = GetAge(value);
+            }
+        }
 
         private int _age;
         public int? Age
         {
-            get {
-                if(_age > 120 || Name == null)
+            get
+            {
+                if (_age > 120 || Name == null)
                     return null;
                 return _age;
             }
-            set { _age = GetAge(); }
+            set { _age = (int)value; }
         }
 
-        private int GetAge()
+        private int GetAge(DateTime birthDay)
         {
             int curYear = DateTime.Now.Year;
             int curMonth = DateTime.Now.Month;
             int curDay = DateTime.Now.Day;
 
-            int age = curYear - BirthDay.Year;
+            _age = curYear - BirthDay.Year;
             if (curMonth < BirthDay.Month && curDay < BirthDay.Day)
-                return age - 1;
-            return age;
+                return _age - 1;
+            return _age;
         }
     }
 }

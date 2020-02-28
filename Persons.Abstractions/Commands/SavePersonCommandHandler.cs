@@ -1,9 +1,5 @@
 ﻿using Persons.Abstractions.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persons.Abstractions.Commands
 {
@@ -24,27 +20,15 @@ namespace Persons.Abstractions.Commands
 
             try
             {
-                var item = MockPersonDatabase
-                    .Persons
-                    .FirstOrDefault(p => p.Id == _command.Person.Id);
-
-                if (item == null)
+                var person = new Person
                 {
-                    item = new Person
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = _command.Person.Name,
-                        Age = _command.Person.Age
-                    };
-                    MockPersonDatabase.Persons.Add(item);
-                }
-                else
-                {
-                    item.Name = _command.Person.Name;
-                    item.Age = _command.Person.Age;
-                }
+                    Id = Guid.NewGuid(),
+                    Name = _command.Person.Name,
+                    BirthDay = _command.Person.BirthDay
+                };
+                MockPersonDatabase.Persons.Add(person);
 
-                responce.ID = item.Id;
+                responce.ID = person.Id;
                 responce.Success = true;
                 responce.Message = "Person saved.";
             }

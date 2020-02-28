@@ -1,8 +1,11 @@
 ﻿using Nancy;
+using Nancy.ModelBinding;
 using Persons.Abstractions.Queries;
 using Persons.Abstractions.Data;
 using Persons.Abstractions.Commands;
 using AutoMapper;
+using Persons.Abstractions.Dto;
+using System;
 
 namespace Persons.Api
 {
@@ -22,14 +25,19 @@ namespace Persons.Api
                 var handler = PersonQueryHandlerFactory.Build(query, _repo, _mapper);
                 return handler.Get(); 
             });
-/*
+
             Post("/persons/", parameters =>
             {
-                //var command = new SavePersonCommand();  //new FindPersonQuery(parameters.id);
-                //var handler = PersonQueryHandlerFactory.Build(query, _repo);
-                //return handler.Get();
+                var per = this.Bind<PersonNew>();
+                PersonDetail person = new PersonDetail { Name = per.Name, BirthDay = DateTime.Parse(per.BirthDay) };
+                var command = new SavePersonCommand(person);
+                var handler = PersonCommandHandlerFactory.Build(command);
+                var responce = handler.Execute();
+
+                if (responce.Success)
+                    return responce;
+                return HttpStatusCode.BadRequest; 
             });
-            */
         }
     }
 }

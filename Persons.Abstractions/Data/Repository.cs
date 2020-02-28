@@ -25,7 +25,7 @@ namespace Persons.Abstractions.Data
                     {
                         Id = item.Id,
                         Name = item.Name,
-                        Age = item.Age
+                        BirthDay = item.BirthDay
                     });
             }
         }

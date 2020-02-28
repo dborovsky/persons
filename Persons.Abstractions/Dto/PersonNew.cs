@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Persons.Abstractions.Dto
 {
-    public class PersonDetail
+    public class PersonNew
     {
         public string Name { get; set; }
-        public DateTime BirthDay { get; set; }
-        public int? Age { get; set; }
+        public string BirthDay { get; set; }
     }
 }
